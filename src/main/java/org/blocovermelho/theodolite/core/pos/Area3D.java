@@ -23,17 +23,13 @@ public class Area3D {
      * ABSOLUTE coordinates for the minimum (---) corner of the area.
      */
     protected Pos3D minCornerPos;
-    protected byte detail;
 
-    public Area3D (byte detail, Pos3D minCornerPos, Pos3D maxCornerPos) {
-        this.detail = detail;
+    public Area3D (Pos3D minCornerPos, Pos3D maxCornerPos) {
         this.minCornerPos = minCornerPos;
         this.maxCornerPos = maxCornerPos;
     }
 
     public Area3D (Region2D region2D) {
-        this.detail = NumericalConstants.REGION_DETAIL_LEVEL;
-
         // Region files have 32 chunks, 0-indexed.
         // Min Chunk: X*32, Max Chunk: ((X+1)*32 - 1)
         // Min Block: C*16, Max Block: ((C+1)*16 - 1)
@@ -50,7 +46,6 @@ public class Area3D {
     }
 
     public Area3D (ChunkPos chunkPos, int y) {
-        this.detail = NumericalConstants.CHUNK_DETAIL_LEVEL;
         // Chunks are 16 * Build Limit * 16 Blocks
         // In our case, a chunk is a 16*16*16 area, similar to a "sub chunk"
         // This is done since we're dealing with an octree, which all components are cubes.
@@ -72,7 +67,6 @@ public class Area3D {
     }
 
     public Area3D (BlockPos blockPos) {
-        this.detail = NumericalConstants.BLOCK_DETAIL_LEVEL;
         this.minCornerPos = Pos3D.of(blockPos);
         this.maxCornerPos = Pos3D.of(blockPos);
     }
@@ -81,7 +75,7 @@ public class Area3D {
         return new Box(this.minCornerPos.x, this.minCornerPos.y, this.minCornerPos.z, this.maxCornerPos.x, this.maxCornerPos.y, this.maxCornerPos.z);
     }
 
-    public int getBlockWidth() { return BitShift.powerOfTwo(this.detail); }
+    public int getBlockWidth() { return 0; }
 
     /** @return the corner with the smallest X and Z coordinate */
     public Pos3D getMinCornerPos()
@@ -89,9 +83,6 @@ public class Area3D {
         return this.minCornerPos;
     }
 
-    public byte getDetail() {
-        return detail;
-    }
     public Pos3D getMaxCornerPos() { return  this.maxCornerPos;}
     public boolean contains(Area3D area3D) {
         return this.minCornerPos.x <= area3D.minCornerPos.x && area3D.minCornerPos.x <= this.maxCornerPos.x &&
@@ -100,62 +91,10 @@ public class Area3D {
     }
 
 
-    /**
-     * Returns the Area3D 1 detail level lower <br><br>
-     * @see OctDirection
-     */
-    public Area3D getChild(OctDirection direction)
-    {
-        if (this.detail == NumericalConstants.BLOCK_DETAIL_LEVEL) {
-            return this;
-        }
-
-        int childSize = BitShift.powerOfTwo(this.detail - 1);
-
-        Pos3D offset = direction.asVector().scale(childSize);
-
-        return new Area3D
-            ((byte) (this.detail - 1),
-            this.minCornerPos.add(offset),
-            this.maxCornerPos.sub(childSize).add(offset)
-        );
-    }
-
-    public List<Pair<OctDirection,Area3D>> getChildren() {
-        return Arrays.stream(OctDirection.values()).map(y ->
-                Pair.of( y, getChild(y))
-        ).toList();
-    }
-
     @Override
     public String toString() {
-        return "[Detail:" + detail + "] -- " + minCornerPos + ", ++" + maxCornerPos;
+        return " -- " + minCornerPos + ", ++" + maxCornerPos;
     }
-
-
-    //    public Area3D convertNewToDetailLevel(byte newSectionDetailLevel)
-//    {
-//        Area3D newPos = new Area3D(this.detail, this.centerPos);
-//        newPos.convertSelfToDetailLevel(newSectionDetailLevel);
-//
-//        return newPos;
-//    }
-//
-//    protected void convertSelfToDetailLevel(byte newDetailLevel)
-//    {
-//        // logic originally taken from DhLodPos
-//        if (newDetailLevel >= this.detail)
-//        {
-//            this.centerPos = this.centerPos.floorDiv(BitShift.powerOfTwo(newDetailLevel - this.detail));
-//        }
-//        else
-//        {
-//            this.centerPos = this.centerPos.scale(BitShift.powerOfTwo(this.detail - newDetailLevel));
-//        }
-//
-//        this.detail = newDetailLevel;
-//    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -163,7 +102,7 @@ public class Area3D {
         if (o == null || getClass() != o.getClass()) return false;
         Area3D area3D = (Area3D) o;
 
-        return this.detail == area3D.detail &&
+        return // this.detail == area3D.detail &&
                 maxCornerPos.equals(area3D.maxCornerPos) &&
                 minCornerPos.equals(area3D.minCornerPos);
     }
@@ -171,7 +110,7 @@ public class Area3D {
     @Override
     public int hashCode()
     {
-        return Integer.hashCode(this.detail) ^ // XOR
+        return // Integer.hashCode(this.detail) ^ // XOR
                 this.maxCornerPos.hashCode() ^ // XOR
                 this.minCornerPos.hashCode();
     }
