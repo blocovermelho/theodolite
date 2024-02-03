@@ -2,6 +2,7 @@ package org.blocovermelho.theodolite.core.octree;
 
 import org.blocovermelho.theodolite.core.pos.Area3D;
 import org.blocovermelho.theodolite.core.utils.NumericalConstants;
+import org.blocovermelho.theodolite.core.utils.arithmetic.BitShift;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -203,6 +204,23 @@ public class OctNode<T> {
         return this.sectionPos.getMaxCornerPos();
     }
 
+    public Area3D getChildArea(OctDirection direction) {
+
+        if (this.depth == NumericalConstants.BLOCK_DETAIL_LEVEL) {
+            return this.sectionPos;
+        }
+
+        int childSize = BitShift.powerOfTwo(this.depth - 1);
+
+        Pos3D offset = direction.asVector().scale(childSize);
+
+        return new Area3D
+                (
+                        this.getMinCornerPos().add(offset),
+                        this.getMaxCornerPos().sub(childSize).add(offset)
+                );
+    }
+    
     public OctNode<T> getChild(OctDirection direction) {
         return getChildByIndex(direction.index);
     }
