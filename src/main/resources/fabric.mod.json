@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "theodolite",
+  "version": "${version}",
+  "name": "theodolite",
+  "description": "minecraft zoning api",
+  "authors": [
+    "roridev"
+  ],
+  "contact": {
+    "website": "https://github.com/blocovermelho/theodolite",
+    "repo": "https://github.com/blocovermelho/theodolite"
+  },
+  "license": "unlicense",
+  "icon": "assets/theodolite/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "org.blocovermelho.theodolite.client.TheodoliteClient"
+    ],
+    "main": [
+      "org.blocovermelho.theodolite.Theodolite"
+    ]
+  },
+  "mixins": [
+    "theodolite.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
