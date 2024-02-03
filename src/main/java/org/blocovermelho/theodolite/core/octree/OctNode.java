@@ -195,6 +195,10 @@ public class OctNode<T> {
         }
     }
 
+    public Pos3D getMinCornerPos() {
+        return this.sectionPos.getMinCornerPos();
+    }
+
     public OctNode<T> getChild(OctDirection direction) {
         return getChildByIndex(direction.index);
     }
