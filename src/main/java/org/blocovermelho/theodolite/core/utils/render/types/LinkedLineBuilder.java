@@ -18,7 +18,7 @@ public class LinkedLineBuilder {
         this.color = color;
     }
 
-    public LinkedLineBuilder andThen(int x, int y, int z) {
+    public LinkedLineBuilder andThen(double x, double y, double z) {
         this.points.add(new Pos3D(x, y , z));
         return this;
     }

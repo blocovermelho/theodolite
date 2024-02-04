@@ -13,12 +13,12 @@ public class LineBuilder {
         this.buffer = buffer;
         this.color = color;
     }
-    public LineBuilder from(int x, int y, int z) {
+    public LineBuilder from(double x, double y, double z) {
         this.from = new Pos3D(x, y, z);
         return this;
     }
 
-    public LineBuilder to(int x, int y, int z) {
+    public LineBuilder to(double x, double y, double z) {
         this.to = new Pos3D(x, y, z);
         return this;
     }
