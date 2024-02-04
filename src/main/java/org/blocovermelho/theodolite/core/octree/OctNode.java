@@ -239,6 +239,26 @@ public class OctNode<T> {
         };
     }
 
+    private void subdivide() {
+        Area3I nwdArea = this.getChildArea(OctDirection.NWD);
+        Area3I nedArea = this.getChildArea(OctDirection.NED);
+        Area3I nwuArea = this.getChildArea(OctDirection.NWU);
+        Area3I neuArea = this.getChildArea(OctDirection.NEU);
+        Area3I swdArea = this.getChildArea(OctDirection.SWD);
+        Area3I sedArea = this.getChildArea(OctDirection.SED);
+        Area3I swuArea = this.getChildArea(OctDirection.SWU);
+        Area3I seuArea = this.getChildArea(OctDirection.SEU);
+
+        this.nwdChild = new OctNode<>(nwdArea, (byte) (this.depth - 1));
+        this.nedChild = new OctNode<>(nedArea, (byte) (this.depth - 1));
+        this.nwuChild = new OctNode<>(nwuArea, (byte) (this.depth - 1));
+        this.neuChild = new OctNode<>(neuArea, (byte) (this.depth - 1));
+        this.swdChild = new OctNode<>(swdArea, (byte) (this.depth - 1));
+        this.sedChild = new OctNode<>(sedArea, (byte) (this.depth - 1));
+        this.swuChild = new OctNode<>(swuArea, (byte) (this.depth - 1));
+        this.seuChild = new OctNode<>(seuArea, (byte) (this.depth - 1));
+    }
+
     @Override
     public String toString() { return "pos: " + this.sectionPos + ", children #: " + this.getChildCount() + ", value: " + this.value; }
 
