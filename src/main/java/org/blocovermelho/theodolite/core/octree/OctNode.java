@@ -262,6 +262,6 @@ public class OctNode<T> {
     }
 
     @Override
-    public String toString() { return "pos: " + this.sectionPos + ", children #: " + this.getChildCount() + ", value: " + this.value; }
+    public String toString() { return "pos: " + this.sectionPos + ", children #: " + this.getChildCount() + ", value: " + this.value  + ", depth: " + this.depth; }
 
 }
