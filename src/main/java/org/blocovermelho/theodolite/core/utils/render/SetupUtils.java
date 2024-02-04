@@ -14,8 +14,6 @@ import org.blocovermelho.theodolite.core.utils.render.types.Color4f;
 import org.blocovermelho.theodolite.core.utils.render.types.LineBuilder;
 import org.blocovermelho.theodolite.core.utils.render.types.LinkedLineBuilder;
 
-import java.awt.geom.Area;
-
 // https://github.com/maruohon/litematica/blob/pre-rewrite/fabric/1.20.x/src/main/java/fi/dy/masa/litematica/render/RenderUtils.java
 public class SetupUtils {
     public static void setupBlend() {

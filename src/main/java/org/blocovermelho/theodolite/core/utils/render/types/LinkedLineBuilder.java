@@ -1,12 +1,9 @@
 package org.blocovermelho.theodolite.core.utils.render.types;
 
 import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.util.math.Vec3d;
 import org.blocovermelho.theodolite.core.pos.Pos3D;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class LinkedLineBuilder {
     LinkedList<Pos3D> points = new LinkedList<>();
