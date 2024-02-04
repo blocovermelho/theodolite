@@ -20,8 +20,8 @@ public class OctTreeNodeIterator<T> implements Iterator<OctNode<T>> {
 
     public OctTreeNodeIterator(OctNode<T> rootNode, boolean onlyReturnLeafValues) {
         this.onlyReturnLeafValues = onlyReturnLeafValues;
-        // this.iteratorDetailLevel = rootNode.sectionPos.getDetail();
         this.minimumDetailLevel = rootNode.minimumDetailLevel;
+        this.iteratorDetailLevel = rootNode.depth;
 
 
         if (!this.onlyReturnLeafValues) {
