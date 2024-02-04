@@ -36,16 +36,16 @@ public class SetupUtils {
         buffer.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
     }
 
-    public static Area3D cameraTransform(Area3D box,  Pos3D cameraPos) {
-        int minX = box.getMinCornerPos().getX() - cameraPos.getX();
-        int minY = box.getMinCornerPos().getY() - cameraPos.getY();
-        int minZ = box.getMinCornerPos().getZ() - cameraPos.getZ();
+    public static Area3D cameraTransform(Area3I box, Vec3d cameraPos) {
+        double minX = box.getMinCornerPos().getX() - cameraPos.getX();
+        double minY = box.getMinCornerPos().getY() - cameraPos.getY();
+        double minZ = box.getMinCornerPos().getZ() - cameraPos.getZ();
 
-        int maxX = box.getMaxCornerPos().getX() - cameraPos.getX() + 1;
-        int maxY = box.getMaxCornerPos().getY() - cameraPos.getY() + 1;
-        int maxZ = box.getMaxCornerPos().getZ() - cameraPos.getZ() + 1;
+        double maxX = box.getMaxCornerPos().getX() - cameraPos.getX() + 1;
+        double maxY = box.getMaxCornerPos().getY() - cameraPos.getY() + 1;
+        double maxZ = box.getMaxCornerPos().getZ() - cameraPos.getZ() + 1;
 
-        return new Area3D((byte) 0, new Pos3D(minX, minY, minZ), new Pos3D(maxX, maxY, maxZ));
+        return new Area3D(new Pos3D(minX, minY, minZ), new Pos3D(maxX, maxY, maxZ));
     }
 
     public static void batched_drawBoxOutlines(Area3D box, Pos3D cameraPos, Color4f color, BufferBuilder buffer) {
