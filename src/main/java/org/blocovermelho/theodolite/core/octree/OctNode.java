@@ -16,8 +16,8 @@ public class OctNode<T> {
     public byte depth;
     public T value;
 
-    public OctNode(Area3I centerPos, byte minimumDetailLevel) {
-        this.minimumDetailLevel = minimumDetailLevel;
+    public OctNode(Area3I centerPos, byte depth) {
+        this.depth = depth;
         this.sectionPos = centerPos;
     }
 
