@@ -13,6 +13,7 @@ public class OctNode<T> {
 
     public Area3I sectionPos;
     public byte minimumDetailLevel = NumericalConstants.BLOCK_DETAIL_LEVEL;
+    public byte depth;
     public T value;
 
     public OctNode(Area3I centerPos, byte minimumDetailLevel) {
