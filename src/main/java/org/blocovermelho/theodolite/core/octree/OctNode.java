@@ -2,6 +2,7 @@ package org.blocovermelho.theodolite.core.octree;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import org.blocovermelho.theodolite.core.octree.iter.OctNodeDirectChildIterator;
 import org.blocovermelho.theodolite.core.pos.Area3I;
 import org.blocovermelho.theodolite.core.pos.Pos3I;
 import org.blocovermelho.theodolite.core.pos.Region2I;
@@ -134,83 +135,28 @@ public class OctNode<T> {
     }
 
     private OctNode<T> getOrSetValue(Area3I inputSectionPos, boolean replace, T newValue) {
-        if (!this.sectionPos.contains(inputSectionPos)) {
-            LOGGER.error((replace ? "set " : "get ") + "@ " + this.sectionPos + " doesn't contain " + inputSectionPos);
-            throw new IllegalArgumentException("Input section pos outside of OctNode's sectionPos");
-        }
-
-        if (inputSectionPos.getDetail() > this.sectionPos.getDetail()) {
-            throw new IllegalArgumentException("Input section detail higher than OctNode's detail level");
-        }
-
-        if (inputSectionPos.getDetail() == this.sectionPos.getDetail() && !inputSectionPos.equals(this.sectionPos)) {
-            throw new IllegalArgumentException("Input section pos has the same detail as OctNode, but the positions aren't the same. Did you try setting a value to a neighbouring node?");
-        }
-
-        if (inputSectionPos.getDetail() < NumericalConstants.BLOCK_DETAIL_LEVEL) {
-            throw new IllegalArgumentException("Input section with a detail lower than BLOCK_DETAIL_LEVEL.");
-        }
-
-        if (inputSectionPos.getDetail() == this.sectionPos.getDetail()) {
-            if (replace) {
-                this.value = newValue;
-            }
+        if (!inputSectionPos.intersects(this.sectionPos)) {
+            // LOGGER.info("INPUT: "+ inputSectionPos + " does not intersect with NODE: "+ this +" . Skipping.");
             return this;
         } else {
-            Area3I nwdArea = this.sectionPos.getChild(OctDirection.NWD);
-            Area3I nedArea = this.sectionPos.getChild(OctDirection.NED);
-            Area3I nwuArea = this.sectionPos.getChild(OctDirection.NWU);
-            Area3I neuArea = this.sectionPos.getChild(OctDirection.NEU);
-            Area3I swdArea = this.sectionPos.getChild(OctDirection.SWD);
-            Area3I sedArea = this.sectionPos.getChild(OctDirection.SED);
-            Area3I swuArea = this.sectionPos.getChild(OctDirection.SWU);
-            Area3I seuArea = this.sectionPos.getChild(OctDirection.SEU);
-
-            OctNode<T> childNode = null;
-            if (nwdArea.contains(inputSectionPos)) {
-                if (replace && this.nwdChild == null) {
-                    this.nwdChild = new OctNode<>(nwdArea, this.minimumDetailLevel);
+            if (this.sectionPos.totallyInsideOf(inputSectionPos) || this.depth <= this.minimumDetailLevel) {
+                LOGGER.info("[LeaF] INPUT: "+ inputSectionPos + " is totally contained inside NODE: "+ this +".");
+                // Make it into a leaf
+                if (replace) {
+                    this.value = newValue;
                 }
-                childNode = this.nwdChild;
-            } else if (nedArea.contains(inputSectionPos)) {
-                if (replace && this.nedChild == null) {
-                    this.nedChild = new OctNode<>(nedArea, this.minimumDetailLevel);
-                }
-                childNode = this.nedChild;
-            } else if (nwuArea.contains(inputSectionPos)) {
-                if (replace && this.nwuChild == null) {
-                    this.nwuChild = new OctNode<>(nwuArea, this.minimumDetailLevel);
-                }
-                childNode = this.nwuChild;
-            } else if (neuArea.contains(inputSectionPos)) {
-                if (replace && this.neuChild == null) {
-                    this.neuChild = new OctNode<>(neuArea, this.minimumDetailLevel);
-                }
-                childNode = this.neuChild;
-            } else if (swdArea.contains(inputSectionPos)) {
-                if (replace && this.swdChild == null) {
-                    this.swdChild = new OctNode<>(swdArea, this.minimumDetailLevel);
-                }
-                childNode = this.swdChild;
-            } else if (sedArea.contains(inputSectionPos)) {
-                if (replace && this.sedChild == null) {
-                    this.sedChild = new OctNode<>(sedArea, this.minimumDetailLevel);
-                }
-                childNode = this.sedChild;
-            } else if (swuArea.contains(inputSectionPos)) {
-                if (replace && this.swuChild == null) {
-                    this.swuChild = new OctNode<>(swuArea, this.minimumDetailLevel);
-                }
-                childNode = this.swuChild;
-            } else if (seuArea.contains(inputSectionPos)) {
-                if (replace && this.seuChild == null) {
-                    this.seuChild = new OctNode<>(seuArea, this.minimumDetailLevel);
-                }
-            } else {
-                throw new IllegalStateException("PANIC!!! Input position not contained by any children node. Should be Unreachable.");
+                LOGGER.info("Leaf Node @ " + this);
+                return this;
             }
-            return (childNode != null) ? childNode.getOrSetValue(inputSectionPos, replace, newValue) : null;
+
+            LOGGER.info("[Subdivide] "+ this +".");
+            this.subdivide();
+            OctNodeDirectChildIterator<T> childIterator = new OctNodeDirectChildIterator<>(this);
+            childIterator.forEachRemaining(child -> {
+                child.getOrSetValue(inputSectionPos, replace, newValue);
+            });
         }
+        return null;
     }
 
     public Pos3I getMinCornerPos() {
