@@ -39,6 +39,10 @@ public class LinkedLineBuilder {
             head = next;
             next = this.points.poll();
         }
+
+        this.buffer.vertex(head.getX(), head.getY(), head.getZ()).color(color.red, color.green, color.blue, color.alpha).next();
+        assert next != null;
+        this.buffer.vertex(next.getX(), next.getY(), next.getZ()).color(color.red, color.green, color.blue, color.alpha).next();
     }
 
 
