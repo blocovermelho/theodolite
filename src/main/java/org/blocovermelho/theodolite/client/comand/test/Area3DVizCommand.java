@@ -65,6 +65,7 @@ public class Area3DVizCommand {
                             player.sendMessage(Text.of("OctNode<>: " + x));
                         });
 
+                        DebugRenderer.getInstance().addBox(playerArea, new Color4f(0.f, 1.f,  0.f, 1.f));
                         player.sendMessage(Text.of("Area: " + area));
                         player.sendMessage(Text.of("Player Area: " + playerArea));
 
