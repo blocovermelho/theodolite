@@ -10,7 +10,7 @@ import java.util.Queue;
 import java.util.function.Consumer;
 
 public class OctTreeNodeIterator<T> implements Iterator<OctNode<T>> {
-    private final byte highestDetailLevel;
+    private final byte minimumDetailLevel;
 
     private final Queue<OctNode<T>> validNodesForDetailLevel = new LinkedList<>();
     private final Queue<OctNode<T>> iteratorNodeQueue = new LinkedList<>();
@@ -20,8 +20,8 @@ public class OctTreeNodeIterator<T> implements Iterator<OctNode<T>> {
 
     public OctTreeNodeIterator(OctNode<T> rootNode, boolean onlyReturnLeafValues) {
         this.onlyReturnLeafValues = onlyReturnLeafValues;
-        this.highestDetailLevel = rootNode.minimumDetailLevel;
         // this.iteratorDetailLevel = rootNode.sectionPos.getDetail();
+        this.minimumDetailLevel = rootNode.minimumDetailLevel;
 
 
         if (!this.onlyReturnLeafValues) {
@@ -52,9 +52,9 @@ public class OctTreeNodeIterator<T> implements Iterator<OctNode<T>> {
 
     @Override
     public OctNode<T> next() {
-        if (this.iteratorDetailLevel < this.highestDetailLevel)
+        if (this.iteratorDetailLevel < this.minimumDetailLevel)
         {
-            throw new NoSuchElementException("Highest detail level reached [" + this.highestDetailLevel + "].");
+            throw new NoSuchElementException("Highest detail level reached [" + this.minimumDetailLevel + "].");
         }
         if (this.iteratorNodeQueue.isEmpty())
         {
@@ -66,7 +66,7 @@ public class OctTreeNodeIterator<T> implements Iterator<OctNode<T>> {
 
         if (this.iteratorNodeQueue.isEmpty() && !onlyReturnLeafValues) {
             this.iteratorDetailLevel--;
-            if (this.iteratorDetailLevel >= this.highestDetailLevel)
+            if (this.iteratorDetailLevel >= this.minimumDetailLevel)
             {
                 Queue<OctNode<T>> parentNodes = new LinkedList<>(this.validNodesForDetailLevel);
                 this.validNodesForDetailLevel.clear();
