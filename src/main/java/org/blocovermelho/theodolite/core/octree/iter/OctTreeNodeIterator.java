@@ -73,14 +73,14 @@ public class OctTreeNodeIterator<T> implements Iterator<OctNode<T>> {
 
                 for (OctNode<T> parentNode : parentNodes)
                 {
-                    for (OctDirection dir : OctDirection.values()) {
-                        OctNode<T> child = parentNode.getChild(dir);
-                        if (child != null) {
-                            this.iteratorNodeQueue.add(child);
-                            this.validNodesForDetailLevel.add(child);
+                    OctNodeDirectChildIterator<T> directChildren = new OctNodeDirectChildIterator<>(parentNode);
 
+                    directChildren.forEachRemaining(x -> {
+                        if (x != null) {
+                            this.iteratorNodeQueue.add(x);
+                            this.validNodesForDetailLevel.add(x);
                         }
-                    }
+                    });
                 }
 
             }
