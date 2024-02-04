@@ -22,7 +22,7 @@ import org.blocovermelho.theodolite.core.octree.iter.OctNodeDirectChildAreaItera
 import org.blocovermelho.theodolite.core.octree.iter.OctTreeNodeIterator;
 import org.blocovermelho.theodolite.core.pos.Area3D;
 import org.blocovermelho.theodolite.core.pos.Pos3D;
-import org.blocovermelho.theodolite.core.pos.Region2D;
+import org.blocovermelho.theodolite.core.pos.Region2I;
 import org.blocovermelho.theodolite.core.utils.NumericalConstants;
 import org.blocovermelho.theodolite.core.utils.arithmetic.BitShift;
 import org.blocovermelho.theodolite.core.utils.render.types.Color4f;
@@ -48,7 +48,7 @@ public class Area3DVizCommand {
 
                         byte detail = NumericalConstants.CHUNK_DETAIL_LEVEL + 2;
 
-                        Area3D area = new Area3D(Region2D.of(chunkPos));
+                        Area3I area = new Area3I(Region2I.of(chunkPos));
                         // 1, 2, 4, 8, 16, 32, 64, 128
                         Area3D playerArea = new Area3D(player.getBlockPos());
 
