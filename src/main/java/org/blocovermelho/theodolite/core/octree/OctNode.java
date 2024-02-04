@@ -1,6 +1,7 @@
 package org.blocovermelho.theodolite.core.octree;
 
-import org.blocovermelho.theodolite.core.pos.Area3D;
+import org.blocovermelho.theodolite.core.pos.Area3I;
+import org.blocovermelho.theodolite.core.pos.Pos3I;
 import org.blocovermelho.theodolite.core.utils.NumericalConstants;
 import org.blocovermelho.theodolite.core.utils.arithmetic.BitShift;
 import org.slf4j.Logger;
@@ -10,11 +11,11 @@ import org.slf4j.LoggerFactory;
 public class OctNode<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger("theodolite.OctNode<T>");
 
-    public Area3D sectionPos;
     public byte minimumDetailLevel;
+    public Area3I sectionPos;
     public T value;
 
-    public OctNode(Area3D centerPos,  byte minimumDetailLevel) {
+    public OctNode(Area3I centerPos, byte minimumDetailLevel) {
         this.minimumDetailLevel = minimumDetailLevel;
         this.sectionPos = centerPos;
     }
@@ -95,7 +96,7 @@ public class OctNode<T> {
      * @return The node at the given position before the new value was set
      * @throws IllegalArgumentException if inputArea has the wrong detail level or is outside the bounds of this node
      */
-    public OctNode<T> getNode(Area3D inputArea) throws IllegalArgumentException {
+    public OctNode<T> getNode(Area3I inputArea) throws IllegalArgumentException {
         return this.getOrSetValue(inputArea, false, null);
     }
 
@@ -104,7 +105,7 @@ public class OctNode<T> {
      * @return The value at the given position before the new value was set
      * @throws IllegalArgumentException if inputArea has the wrong detail level or is outside the bounds of this node
      */
-    public T setValue(Area3D inputArea, T newValue) throws IllegalArgumentException {
+    public T setValue(Area3I inputArea, T newValue) throws IllegalArgumentException {
         OctNode<T> previousNode = this.getNode(inputArea);
         if (previousNode != null) {
             T prevValue = previousNode.value;
@@ -116,7 +117,7 @@ public class OctNode<T> {
         }
     }
 
-    private OctNode<T> getOrSetValue(Area3D inputSectionPos, boolean replace, T newValue) {
+    private OctNode<T> getOrSetValue(Area3I inputSectionPos, boolean replace, T newValue) {
         if (!this.sectionPos.contains(inputSectionPos)) {
             LOGGER.error((replace ? "set " : "get ") + "@ " + this.sectionPos + " doesn't contain " + inputSectionPos);
             throw new IllegalArgumentException("Input section pos outside of OctNode's sectionPos");
@@ -140,14 +141,14 @@ public class OctNode<T> {
             }
             return this;
         } else {
-            Area3D nwdArea = this.sectionPos.getChild(OctDirection.NWD);
-            Area3D nedArea = this.sectionPos.getChild(OctDirection.NED);
-            Area3D nwuArea = this.sectionPos.getChild(OctDirection.NWU);
-            Area3D neuArea = this.sectionPos.getChild(OctDirection.NEU);
-            Area3D swdArea = this.sectionPos.getChild(OctDirection.SWD);
-            Area3D sedArea = this.sectionPos.getChild(OctDirection.SED);
-            Area3D swuArea = this.sectionPos.getChild(OctDirection.SWU);
-            Area3D seuArea = this.sectionPos.getChild(OctDirection.SEU);
+            Area3I nwdArea = this.sectionPos.getChild(OctDirection.NWD);
+            Area3I nedArea = this.sectionPos.getChild(OctDirection.NED);
+            Area3I nwuArea = this.sectionPos.getChild(OctDirection.NWU);
+            Area3I neuArea = this.sectionPos.getChild(OctDirection.NEU);
+            Area3I swdArea = this.sectionPos.getChild(OctDirection.SWD);
+            Area3I sedArea = this.sectionPos.getChild(OctDirection.SED);
+            Area3I swuArea = this.sectionPos.getChild(OctDirection.SWU);
+            Area3I seuArea = this.sectionPos.getChild(OctDirection.SEU);
 
             OctNode<T> childNode = null;
             if (nwdArea.contains(inputSectionPos)) {
@@ -196,15 +197,15 @@ public class OctNode<T> {
         }
     }
 
-    public Pos3D getMinCornerPos() {
+    public Pos3I getMinCornerPos() {
         return this.sectionPos.getMinCornerPos();
     }
 
-    public Pos3D getMaxCornerPos() {
+    public Pos3I getMaxCornerPos() {
         return this.sectionPos.getMaxCornerPos();
     }
 
-    public Area3D getChildArea(OctDirection direction) {
+    public Area3I getChildArea(OctDirection direction) {
 
         if (this.depth == NumericalConstants.BLOCK_DETAIL_LEVEL) {
             return this.sectionPos;
@@ -212,9 +213,9 @@ public class OctNode<T> {
 
         int childSize = BitShift.powerOfTwo(this.depth - 1);
 
-        Pos3D offset = direction.asVector().scale(childSize);
+        Pos3I offset = direction.asVector().scale(childSize);
 
-        return new Area3D
+        return new Area3I
                 (
                         this.getMinCornerPos().add(offset),
                         this.getMaxCornerPos().sub(childSize).add(offset)

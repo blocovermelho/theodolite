@@ -17,14 +17,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.blocovermelho.theodolite.core.octree.OctDirection;
-import org.blocovermelho.theodolite.core.pos.Area3D;
-import org.blocovermelho.theodolite.core.pos.Pos3D;
+import org.blocovermelho.theodolite.core.pos.Area3I;
+import org.blocovermelho.theodolite.core.pos.Pos3I;
 import org.blocovermelho.theodolite.core.utils.render.SetupUtils;
 import org.blocovermelho.theodolite.core.utils.render.types.Color4f;
 
 public class Area3DRenderer {
     public static class OpenGL {
-       public static void outline(Area3D area3D, Pos3D cameraPos, Color4f color) {
+       public static void outline(Area3I area3D, Vec3d cameraPos, Color4f color) {
            // System.out.println("Attempting to render: " + area3D);
            Tessellator tess = Tessellator.getInstance();
            BufferBuilder buffer = tess.getBuffer();
@@ -42,41 +42,41 @@ public class Area3DRenderer {
 
     public static class ParticleBased {
 
-        public static void fill(Area3D area3D, ClientPlayerEntity playerEntity, BlockState blockState) {
+        public static void fill(Area3I area3I, ClientPlayerEntity playerEntity, BlockState blockState) {
             var world = playerEntity.getWorld();
-            for (int x = area3D.getMinCornerPos().getX(); x <= area3D.getMaxCornerPos().getX(); x++) {
-                for (int y = area3D.getMinCornerPos().getY(); y <= area3D.getMaxCornerPos().getY(); y++) {
-                    for (int z = area3D.getMinCornerPos().getZ(); z <= area3D.getMaxCornerPos().getZ(); z++) {
+            for (int x = area3I.getMinCornerPos().getX(); x <= area3I.getMaxCornerPos().getX(); x++) {
+                for (int y = area3I.getMinCornerPos().getY(); y <= area3I.getMaxCornerPos().getY(); y++) {
+                    for (int z = area3I.getMinCornerPos().getZ(); z <= area3I.getMaxCornerPos().getZ(); z++) {
                         world.setBlockState(new BlockPos(x,y,z), blockState);
                     }
                 }
             }
 
         }
-        public static void render(Area3D area3D, ClientPlayerEntity playerEntity, OctDirection direction) {
+        public static void render(Area3I area3I, ClientPlayerEntity playerEntity, OctDirection direction) {
             var world = playerEntity.getWorld();
-            for (int x = area3D.getMinCornerPos().getX(); x <= area3D.getMaxCornerPos().getX(); x++) {
-                renderBlock(new Pos3D(x, area3D.getMinCornerPos().getY(), area3D.getMinCornerPos().getZ()), world, direction);
-                renderBlock(new Pos3D(x, area3D.getMaxCornerPos().getY(), area3D.getMaxCornerPos().getZ()), world, direction);
-                renderBlock(new Pos3D(x, area3D.getMinCornerPos().getY(), area3D.getMaxCornerPos().getZ()), world, direction);
-                renderBlock(new Pos3D(x, area3D.getMaxCornerPos().getY(), area3D.getMinCornerPos().getZ()), world, direction);
+            for (int x = area3I.getMinCornerPos().getX(); x <= area3I.getMaxCornerPos().getX(); x++) {
+                renderBlock(new Pos3I(x, area3I.getMinCornerPos().getY(), area3I.getMinCornerPos().getZ()), world, direction);
+                renderBlock(new Pos3I(x, area3I.getMaxCornerPos().getY(), area3I.getMaxCornerPos().getZ()), world, direction);
+                renderBlock(new Pos3I(x, area3I.getMinCornerPos().getY(), area3I.getMaxCornerPos().getZ()), world, direction);
+                renderBlock(new Pos3I(x, area3I.getMaxCornerPos().getY(), area3I.getMinCornerPos().getZ()), world, direction);
             }
 
-            for (int y = area3D.getMinCornerPos().getY(); y <= area3D.getMaxCornerPos().getY(); y++) {
-                renderBlock(new Pos3D(area3D.getMinCornerPos().getX(), y, area3D.getMinCornerPos().getZ()), world, direction);
-                renderBlock(new Pos3D(area3D.getMaxCornerPos().getX(), y, area3D.getMaxCornerPos().getZ()), world, direction);
-                renderBlock(new Pos3D(area3D.getMinCornerPos().getX(), y, area3D.getMaxCornerPos().getZ()), world, direction);
-                renderBlock(new Pos3D(area3D.getMaxCornerPos().getX(), y, area3D.getMinCornerPos().getZ()), world, direction);
+            for (int y = area3I.getMinCornerPos().getY(); y <= area3I.getMaxCornerPos().getY(); y++) {
+                renderBlock(new Pos3I(area3I.getMinCornerPos().getX(), y, area3I.getMinCornerPos().getZ()), world, direction);
+                renderBlock(new Pos3I(area3I.getMaxCornerPos().getX(), y, area3I.getMaxCornerPos().getZ()), world, direction);
+                renderBlock(new Pos3I(area3I.getMinCornerPos().getX(), y, area3I.getMaxCornerPos().getZ()), world, direction);
+                renderBlock(new Pos3I(area3I.getMaxCornerPos().getX(), y, area3I.getMinCornerPos().getZ()), world, direction);
             }
 
-            for (int z = area3D.getMinCornerPos().getZ(); z <= area3D.getMaxCornerPos().getZ(); z++) {
-                renderBlock(new Pos3D(area3D.getMinCornerPos().getX(), area3D.getMinCornerPos().getY(), z), world, direction);
-                renderBlock(new Pos3D(area3D.getMaxCornerPos().getX(), area3D.getMaxCornerPos().getY(), z), world, direction);
-                renderBlock(new Pos3D(area3D.getMinCornerPos().getX(), area3D.getMaxCornerPos().getY(), z), world, direction);
-                renderBlock(new Pos3D(area3D.getMaxCornerPos().getX(), area3D.getMinCornerPos().getY(), z), world, direction);
+            for (int z = area3I.getMinCornerPos().getZ(); z <= area3I.getMaxCornerPos().getZ(); z++) {
+                renderBlock(new Pos3I(area3I.getMinCornerPos().getX(), area3I.getMinCornerPos().getY(), z), world, direction);
+                renderBlock(new Pos3I(area3I.getMaxCornerPos().getX(), area3I.getMaxCornerPos().getY(), z), world, direction);
+                renderBlock(new Pos3I(area3I.getMinCornerPos().getX(), area3I.getMaxCornerPos().getY(), z), world, direction);
+                renderBlock(new Pos3I(area3I.getMaxCornerPos().getX(), area3I.getMinCornerPos().getY(), z), world, direction);
             }
         }
-        private static void renderBlock(Pos3D pos, World world, OctDirection direction) {
+        private static void renderBlock(Pos3I pos, World world, OctDirection direction) {
             world.addParticle(new DustParticleEffect(Vec3d.unpackRgb(direction.asColor()).toVector3f(), 1.0f), pos.getX(), pos.getY(), pos.getZ(), 0,0,0);
             // world.setBlockState(pos.toBlockPos(), direction.asState());
         }

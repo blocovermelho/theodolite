@@ -6,6 +6,8 @@ import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.util.math.Vec3d;
+import org.blocovermelho.theodolite.core.pos.Area3I;
 import org.blocovermelho.theodolite.core.pos.Area3D;
 import org.blocovermelho.theodolite.core.pos.Pos3D;
 import org.blocovermelho.theodolite.core.utils.render.types.Color4f;
@@ -48,7 +50,7 @@ public class SetupUtils {
         return new Area3D(new Pos3D(minX, minY, minZ), new Pos3D(maxX, maxY, maxZ));
     }
 
-    public static void batched_drawBoxOutlines(Area3D box, Pos3D cameraPos, Color4f color, BufferBuilder buffer) {
+    public static void batched_drawBoxOutlines(Area3I box, Vec3d cameraPos, Color4f color, BufferBuilder buffer) {
         var lline = new LinkedLineBuilder(buffer, color);
         var line = new LineBuilder(buffer,color);
 

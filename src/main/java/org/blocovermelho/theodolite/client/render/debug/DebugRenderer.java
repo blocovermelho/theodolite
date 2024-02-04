@@ -4,8 +4,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.Tessellator;
-import org.blocovermelho.theodolite.core.pos.Area3D;
-import org.blocovermelho.theodolite.core.pos.Pos3D;
+import org.blocovermelho.theodolite.core.pos.Area3I;
 import org.blocovermelho.theodolite.core.utils.render.types.Color4f;
 
 import java.awt.geom.Area;
@@ -24,7 +23,7 @@ public class DebugRenderer {
     }
     public static DebugRenderer getInstance() { return  INSTANCE; }
 
-    public Set<Area3D> boxes = new HashSet<>();
+    public Set<Area3I> boxes = new HashSet<>();
     private BufferBuilder buffer;
 
     static Color4f[] COLORS = new Color4f[] {
@@ -32,8 +31,8 @@ public class DebugRenderer {
     };
 
     public void renderBoxes(Camera camera) {
-        for (Area3D box : boxes) {
-            Area3DRenderer.OpenGL.outline(box, Pos3D.of(camera.getPos()), COLORS[0]);
+        for (Area3I box : boxes) {
+            Area3DRenderer.OpenGL.outline(box, camera.getPos(), COLORS[0]);
         }
     }
 
@@ -41,7 +40,7 @@ public class DebugRenderer {
         this.boxes.clear();
     }
 
-    public void addBox(Area3D box) {
+    public void addBox(Area3I box) {
         this.boxes.add(box);
     }
 }

@@ -20,8 +20,8 @@ import org.blocovermelho.theodolite.core.octree.OctDirection;
 import org.blocovermelho.theodolite.core.octree.OctNode;
 import org.blocovermelho.theodolite.core.octree.iter.OctNodeDirectChildAreaIterator;
 import org.blocovermelho.theodolite.core.octree.iter.OctTreeNodeIterator;
-import org.blocovermelho.theodolite.core.pos.Area3D;
-import org.blocovermelho.theodolite.core.pos.Pos3D;
+import org.blocovermelho.theodolite.core.pos.Area3I;
+import org.blocovermelho.theodolite.core.pos.Pos3I;
 import org.blocovermelho.theodolite.core.pos.Region2I;
 import org.blocovermelho.theodolite.core.utils.NumericalConstants;
 import org.blocovermelho.theodolite.core.utils.arithmetic.BitShift;
@@ -50,9 +50,9 @@ public class Area3DVizCommand {
 
                         Area3I area = new Area3I(Region2I.of(chunkPos));
                         // 1, 2, 4, 8, 16, 32, 64, 128
-                        Area3D playerArea = new Area3D(player.getBlockPos());
+                        Area3I playerArea = new Area3I(player.getBlockPos());
 
-                        OctNode<String> octNode = new OctNode<>(area, NumericalConstants.BLOCK_DETAIL_LEVEL);
+                        OctNode<String> octNode  = OctNode.of(Region2I.of(chunkPos));
                         octNode.setValue(playerArea, "Data yay!");
 
                         var iter = new OctTreeNodeIterator<>(octNode, false);

@@ -2,7 +2,7 @@ package org.blocovermelho.theodolite.core.octree;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import org.blocovermelho.theodolite.core.pos.Pos3D;
+import org.blocovermelho.theodolite.core.pos.Pos3I;
 
 public enum OctDirection {
     /**
@@ -64,16 +64,16 @@ public enum OctDirection {
     /**
      * @return The current direction as a Pos3D vector.
      */
-    public Pos3D asVector() {
+    public Pos3I asVector() {
         return switch (this) {
-            case NWD -> Pos3D.ZERO;
-            case NED -> new Pos3D(0,0, 1);
-            case NWU -> new Pos3D(0,1, 0);
-            case NEU -> new Pos3D(0,1, 1);
-            case SWD -> new Pos3D(1,0, 0);
-            case SED -> new Pos3D(1,0, 1);
-            case SWU -> new Pos3D(1,1, 0);
-            case SEU -> new Pos3D(1,1, 1);
+            case NWD -> Pos3I.ZERO;
+            case NED -> new Pos3I(0,0, 1);
+            case NWU -> new Pos3I(0,1, 0);
+            case NEU -> new Pos3I(0,1, 1);
+            case SWD -> new Pos3I(1,0, 0);
+            case SED -> new Pos3I(1,0, 1);
+            case SWU -> new Pos3I(1,1, 0);
+            case SEU -> new Pos3I(1,1, 1);
         };
     }
 
