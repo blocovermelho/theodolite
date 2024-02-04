@@ -1,7 +1,10 @@
 package org.blocovermelho.theodolite.core.octree;
 
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import org.blocovermelho.theodolite.core.pos.Area3I;
 import org.blocovermelho.theodolite.core.pos.Pos3I;
+import org.blocovermelho.theodolite.core.pos.Region2I;
 import org.blocovermelho.theodolite.core.utils.NumericalConstants;
 import org.blocovermelho.theodolite.core.utils.arithmetic.BitShift;
 import org.slf4j.Logger;
@@ -19,6 +22,18 @@ public class OctNode<T> {
     public OctNode(Area3I centerPos, byte depth) {
         this.depth = depth;
         this.sectionPos = centerPos;
+    }
+
+    public static<A> OctNode<A> of(ChunkPos chunkPos, int y) {
+        return new OctNode<A>(new Area3I(chunkPos, y), NumericalConstants.CHUNK_DETAIL_LEVEL);
+    }
+
+    public static<A> OctNode<A> of(Region2I region2I) {
+        return new OctNode<A>(new Area3I(region2I), NumericalConstants.REGION_DETAIL_LEVEL);
+    }
+
+    public static<A> OctNode<A> of(BlockPos blockPos) {
+        return new OctNode<A>(new Area3I(blockPos), NumericalConstants.BLOCK_DETAIL_LEVEL);
     }
 
     /**
