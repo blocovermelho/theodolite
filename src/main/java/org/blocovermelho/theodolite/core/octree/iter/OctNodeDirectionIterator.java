@@ -13,7 +13,7 @@ public class OctNodeDirectionIterator<T> implements Iterator<OctDirection> {
     private final Queue<OctDirection> directionQueue = new LinkedList<>();
 
     public OctNodeDirectionIterator(OctNode<T> parentNode, boolean returnLeaf) {
-        if (parentNode.sectionPos.getDetail() > parentNode.minimumDetailLevel) {
+        if (parentNode.depth > parentNode.minimumDetailLevel) {
             for (OctDirection value : OctDirection.values()) {
                 if (returnLeaf || parentNode.getChild(value) != null) {
                     this.directionQueue.add(value);
