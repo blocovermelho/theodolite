@@ -60,7 +60,7 @@ public class SetupUtils {
         var max = newBox.getMaxCornerPos();
 
 
-        // East Side
+        // West Side
         lline.andThen(min.getX(), min.getY(), min.getZ())
             .andThen(min.getX(), min.getY(), max.getZ())
             .andThen(min.getX(), max.getY(), max.getZ())
@@ -68,7 +68,7 @@ public class SetupUtils {
             .andThen(min.getX(), min.getY(), min.getZ())
             .batch();
 
-        // West Side
+        // East Side
         lline.andThen(max.getX(), min.getY(), max.getZ())
             .andThen(max.getX(), min.getY(),  min.getZ())
             .andThen(max.getX(), max.getY(),  min.getZ())
