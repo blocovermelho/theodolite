@@ -8,6 +8,7 @@ group = project.maven_group
 
 repositories {
     maven { url 'https://maven.wispforest.io' }
+    maven { url 'https://maven.xpple.dev/maven2' }
 }
 
 dependencies {
@@ -18,6 +19,7 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    include modImplementation('dev.xpple:clientarguments:1.5')
    // modImplementation "io.wispforest:owo-lib:0.11.2+1.20"
 }
 
